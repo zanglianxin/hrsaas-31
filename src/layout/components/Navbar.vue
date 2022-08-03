@@ -8,15 +8,19 @@
 
     <!-- <breadcrumb class="breadcrumb-container" /> -->
     <div class="app-breadcrumb">
-      {{$store.state.user.userInfo.companyName}}
+      {{ $store.state.user.userInfo.companyName }}
       <span class="breadBtn">体验版</span>
     </div>
 
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="$store.state.user.userInfo.staffPhoto" class="user-avatar" />
-          <span>{{$store.state.user.userInfo.username}}</span>
+          <img
+            :src="$store.state.user.userInfo.staffPhoto"
+            v-imgError="defaultImg"
+            class="user-avatar"
+          />
+          <span>{{ $store.state.user.userInfo.username }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -36,8 +40,14 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import defaultImg from '@/assets/common/head.jpg'
 
 export default {
+  data() {
+    return {
+      defaultImg,
+    }
+  },
   components: {
     Breadcrumb,
     Hamburger
@@ -50,8 +60,8 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      this.$store.dispatch('user/logout')
+      this.$router.push('/login')
     }
   }
 }
