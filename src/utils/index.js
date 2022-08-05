@@ -115,3 +115,23 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+/**
+ * 将数据处理成树型结构
+ * @param {*} data  原数据
+ * @param {*} pid   父级id
+ * @returns treeList
+ */
+export function transListToTree(data, pid) {
+  const arr = []
+  data.forEach((item) => {
+    if (item.pid === pid) {
+      const children = transListToTree(data, item.id)
+      if (children.length){
+          item.children = children
+      }
+      arr.push(item)
+    }
+  })
+  return arr
+}
