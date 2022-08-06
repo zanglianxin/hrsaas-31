@@ -21,3 +21,22 @@ export const delDeptsApi = (id) => {
     method: 'DELETE'
   })
 }
+
+/**
+ * 获取相关部门信息
+ * @param {*} id 
+ * @returns 
+ */
+export const getDeptByIdApi = (id) => {
+  return request({
+    url: `/company/department/${id}`
+  })
+}
+
+export const EditDeptByIdApi = (data) => {
+  return request({
+    url: `/company/department/${data.id}`,
+    method: 'PUT',
+    data
+  })
+}

@@ -1,22 +1,32 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
-      <el-card class="box-card">
-        <tree-tools :treeNode="company" @add="dialogVisible = true" :isRoot="true"></tree-tools>
+      <el-card class="box-card" v-loading="loading">
+        <tree-tools
+          :treeNode="company"
+          @add="showAddDept"
+          :isRoot="true"
+        ></tree-tools>
         <!-- 树形 -->
-        <el-tree
-          :data="treeData"
-          :props="defaultProps"
-          default-expand-all
-        >
-        <template v-slot='{data}'>
-          <tree-tools  @add="showAddDept" :treeNode="data" @remove='loadDepts'></tree-tools>
-        </template>
+        <el-tree :data="treeData" :props="defaultProps" default-expand-all>
+          <template v-slot="{ data }">
+            <tree-tools
+              @add="showAddDept"
+              :treeNode="data"
+              @remove="loadDepts"
+              @edit="showEdit"
+            ></tree-tools>
+          </template>
         </el-tree>
       </el-card>
     </div>
     <!-- 添加部门弹出层 -->
-    <add-dept :visible.sync="dialogVisible" :currentTreeNode="currentTreeNode" @add-success="loadDepts"></add-dept>
+    <add-dept
+    ref="addDept"
+      :visible.sync="dialogVisible"
+      :currentTreeNode="currentTreeNode"
+      @add-success="loadDepts"
+    ></add-dept>
   </div>
 </template>
 
@@ -40,9 +50,10 @@ export default {
       defaultProps: {
         label: 'name' // 将data中哪个数据名显示到树形页面中
       },
-      company: {name: '传智教育', manage: '负责人'},
+      company: { name: '传智教育', manage: '负责人' },
       dialogVisible: false,
-      currentTreeNode: {}
+      currentTreeNode: {},
+      loading: false
     }
   },
 
@@ -51,14 +62,20 @@ export default {
   },
 
   methods: {
-    async loadDepts(){
+    async loadDepts() {
+      this.loading = true
       const res = await getDeptsApi()
-      console.log(res);
+      console.log(res)
       this.treeData = transListToTree(res.depts, '')
+       this.loading = false
     },
-    showAddDept(val){
+    showAddDept(val) {
       this.dialogVisible = true
       this.currentTreeNode = val
+    },
+    showEdit(val) {
+      this.dialogVisible = true
+      this.$refs.addDept.getDeptById(val.id)
     }
   }
 }
