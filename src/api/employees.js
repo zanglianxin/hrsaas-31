@@ -27,3 +27,14 @@ export function addDepartment(data) {
     data
   })
 }
+
+/**
+ * 获取员工的综合列表数据
+ * ***/
+ export function getEmployeeListApi(params) {
+  return request({
+    url: '/sys/user',
+    params
+  })
+}
+

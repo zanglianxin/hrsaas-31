@@ -34,6 +34,9 @@ for (let key in directive) {
   Vue.directive(key, directive[key])
 }
 
+import components from '@/components'
+Vue.use(components)
+
 Vue.config.productionTip = false
 
 new Vue({
