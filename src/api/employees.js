@@ -31,7 +31,7 @@ export function addDepartment(data) {
 /**
  * 获取员工的综合列表数据
  * ***/
- export function getEmployeeListApi(params) {
+export function getEmployeeListApi(params) {
   return request({
     url: '/sys/user',
     params
@@ -42,7 +42,7 @@ export function addDepartment(data) {
  * 删除员工接口
  * ****/
 
- export function delEmployee(id) {
+export function delEmployee(id) {
   return request({
     url: `/sys/user/${id}`,
     method: 'delete'
@@ -52,7 +52,7 @@ export function addDepartment(data) {
 /** **
  *  新增员工的接口
  * **/
- export function addEmployee(data) {
+export function addEmployee(data) {
   return request({
     method: 'post',
     url: '/sys/user',
@@ -63,12 +63,32 @@ export function addDepartment(data) {
 /**
  * 批量导入员工
  * @param {*} data 员工数组
- * @returns 
+ * @returns
  */
 export const importEmployees = (data) => {
   return request({
     url: '/sys/user/batch',
     method: 'POST',
     data
+  })
+}
+
+/** *
+ *  读取用户详情的基础信息
+ * **/
+ export function getPersonalDetail(id) {
+  return request({
+    url: `/employees/${id}/personalInfo`
+  })
+}
+
+/** *
+ *  更新用户详情的基础信息
+ * **/
+ export function updatePersonal(data) {
+  return request({
+    url: `/employees/${data.userId}/personalInfo`,
+    method: 'put',
+    data,
   })
 }
