@@ -14,6 +14,7 @@ import attendancesRouter from './modules/attendances'
 import salarysRouter from './modules/salarys'
 import settingRouter from './modules/setting'
 import socialRouter from './modules/social'
+import importPage from './modules/import'
 
 // 静态路由
 export const constantRoutes = [
@@ -55,7 +56,8 @@ const asyncRoutes = [
   attendancesRouter,
   salarysRouter,
   settingRouter,
-  socialRouter
+  socialRouter,
+  importPage
 ]
 
 const createRouter = () => new Router({

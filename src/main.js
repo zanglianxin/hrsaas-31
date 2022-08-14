@@ -16,7 +16,6 @@ import '@/icons' // icon
 import '@/permission' // permission control
 import * as directive from '@/directives'
 
-
 // mock 假数据
 if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
@@ -34,6 +33,12 @@ for (let key in directive) {
   Vue.directive(key, directive[key])
 }
 
+// 过滤去统一注册
+import * as filters from '@/filters'
+for (let key in filters) {
+  Vue.filter(key, filters[key])
+}
+
 import components from '@/components'
 Vue.use(components)
 
@@ -43,5 +48,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App)
 })
