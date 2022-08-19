@@ -39,6 +39,9 @@ for (let key in filters) {
   Vue.filter(key, filters[key])
 }
 
+import Print from 'vue-print-nb'
+// Global instruction 
+Vue.use(Print);
 import components from '@/components'
 Vue.use(components)
 

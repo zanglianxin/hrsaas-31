@@ -35,6 +35,7 @@
                   height: 100px;
                   padding: 10px;
                 "
+                @click="showErCodeDialog(row.staffPhoto)"
               />
             </template>
           </el-table-column>
@@ -63,7 +64,12 @@
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
             <template slot-scope="{ row }">
-              <el-button type="text" size="small" @click="$router.push('/employees/detail/' + row.id)">查看</el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="$router.push('/employees/detail/' + row.id)"
+                >查看</el-button
+              >
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
@@ -94,13 +100,19 @@
       @add-success="getEmployeeList"
       :visible.sync="showAddEmployees"
     ></AddEmployee>
+
+    <!-- 头像二维码 -->
+    <el-dialog title="头像二维码" :visible.sync="ercodeDialog" width="30%">
+      <canvas id="canvas"></canvas>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { delEmployee, getEmployeeListApi } from '@/api/employees'
+import QRCode from 'qrcode'
 import employees from '@/constant/employees'
-const {exportExcelMapPath, hireType} = employees
+const { exportExcelMapPath, hireType } = employees
 import AddEmployee from './components/add-employees.vue'
 export default {
   name: 'Employees',
@@ -112,7 +124,8 @@ export default {
         page: 1,
         size: 10
       },
-      showAddEmployees: false
+      showAddEmployees: false,
+      ercodeDialog: false
     }
   },
   components: {
@@ -148,18 +161,20 @@ export default {
     },
     async exportEmployees() {
       const { export_json_to_excel } = await import('@/vendor/Export2Excel')
-      const {rows } = await getEmployeeListApi({
+      const { rows } = await getEmployeeListApi({
         page: 1,
         size: this.total
       })
-      console.log(rows);
+      console.log(rows)
       const header = Object.keys(exportExcelMapPath)
-      const data = rows.map(item => {
-        return header.map(h => {
-          if (h === '聘用形式'){
-            const findItem = hireType.find(hire => hire.id === item[exportExcelMapPath[h]])
+      const data = rows.map((item) => {
+        return header.map((h) => {
+          if (h === '聘用形式') {
+            const findItem = hireType.find(
+              (hire) => hire.id === item[exportExcelMapPath[h]]
+            )
             return findItem ? findItem.value : '未知'
-          }else {
+          } else {
             return item[exportExcelMapPath[h]]
           }
         })
@@ -170,6 +185,14 @@ export default {
         filename: '员工列表', //非必填
         autoWidth: true, //非必填
         bookType: 'xlsx' //非必填
+      })
+    },
+    showErCodeDialog(staffPhoto) {
+      if (!staffPhoto) return this.$message.error('该用户还未设置头像')
+      this.ercodeDialog = true
+      this.$nextTick(() => {
+        const canvas = document.getElementById('canvas')
+        QRCode.toCanvas(canvas, staffPhoto)
       })
     }
   }

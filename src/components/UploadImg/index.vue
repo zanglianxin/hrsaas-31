@@ -27,7 +27,7 @@
 
 <script>
 import COS from 'cos-js-sdk-v5'
-var cos = new COS({
+var cos =  new COS({
   SecretId: 'AKIDnRt75qSqytZBdqmTuFRQClAML6ez66uU',
   SecretKey: 'PbZKsDLGzTiiW7VgfQwFOK4bw4xa0CD2'
 })
