@@ -92,3 +92,16 @@ export const importEmployees = (data) => {
     data,
   })
 }
+
+/**
+ * 给员工分配角色
+ * @param {*} data 
+ * @returns 
+ */
+export const assignRolesApi = (data) => {
+  return request({
+    url: '/sys/user/assignRoles',
+    method: 'PUT',
+    data,
+  })
+}

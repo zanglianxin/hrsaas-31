@@ -11,7 +11,9 @@
             <el-table-column prop="description" label="描述"></el-table-column>
             <el-table-column label="操作">
               <template>
-                <el-button size="small" type="success">分配权限</el-button>
+                <el-button size="small" type="success" @click="allocation"
+                  >分配权限</el-button
+                >
                 <el-button size="small" type="primary">编辑</el-button>
                 <el-button size="small" type="danger">删除</el-button>
               </template>
@@ -40,7 +42,10 @@
               <el-input disabled v-model="companyInfo.name"></el-input>
             </el-form-item>
             <el-form-item label="公司地址">
-              <el-input disabled v-model="companyInfo.companyAddress"></el-input>
+              <el-input
+                disabled
+                v-model="companyInfo.companyAddress"
+              ></el-input>
             </el-form-item>
             <el-form-item label="公司邮箱">
               <el-input disabled v-model="companyInfo.mailbox"></el-input>
@@ -78,12 +83,35 @@
         <el-button type="primary" @click="onAddRole">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 分配权限对话框 -->
+    <el-dialog
+      title="给角色分配权限"
+      :visible.sync="setRightDialog"
+      width="50%"
+    >
+      <el-tree
+        :data="permissions"
+        :props="{label: 'name'}"
+        default-expand-all
+        show-checkbox
+        node-key="id"
+        :default-checked-keys="defaultCheckedPermissin"
+        
+      ></el-tree>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRightDialog = false">取 消</el-button>
+        <el-button type="primary">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { addRoleApi, getRolesApi } from '@/api/role'
 import { getCompanyInfoApi } from '@/api/setting'
+import { getPermissionList } from '@/api/permission'
+import { transListToTree } from '@/utils'
 export default {
   data() {
     return {
@@ -100,13 +128,17 @@ export default {
       addRoleFormRules: {
         name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }]
       },
-      companyInfo: {}
+      companyInfo: {},
+      setRightDialog: false,
+      permissions: [],
+      defaultCheckedPermissin: ['1', '1063327833876729856']
     }
   },
 
   created() {
     this.getRoles()
     this.getCompanyInfo()
+    this.getPermissions()
   },
 
   methods: {
@@ -154,9 +186,20 @@ export default {
     },
 
     async getCompanyInfo() {
-      const res = await getCompanyInfoApi(this.$store.state.user.userInfo.companyId)
+      const res = await getCompanyInfoApi(
+        this.$store.state.user.userInfo.companyId
+      )
       console.log(res)
       this.companyInfo = res
+    },
+
+    allocation() {
+      this.setRightDialog = true
+    },
+
+    async getPermissions() {
+      const res = await getPermissionList()
+      this.permissions = transListToTree(res, '0')
     }
   }
 }
