@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card class="card">
     <el-row type="flex">
       <el-col>
         <el-tag v-if="isShowLeft">
@@ -38,4 +38,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.card {
+  margin: 10px 0;
+}
+</style>

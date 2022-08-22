@@ -1,3 +1,4 @@
+import store from '@/store'
 export const imgError = {
   // 当被绑定的元素插入到dom中时
   inserted: function (el, { value }) {
@@ -22,10 +23,12 @@ export const imgError = {
   }
 }
 
-export const aa = {
-  inserted: function () {}
-}
-
-export const bb = {
-  inserted: function () {}
+export const isHas = {
+  inserted(el, binding) {
+    // console.log(binding);
+    const has = store.state.permission.points.includes(binding.value)
+    if (!has) {
+      el.remove()
+    }
+  }
 }

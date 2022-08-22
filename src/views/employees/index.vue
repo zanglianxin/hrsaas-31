@@ -8,12 +8,16 @@
             size="small"
             type="warning"
             @click="$router.push('/import')"
+             v-isHas="point.employees.import"
             >导入</el-button
           >
-          <el-button size="small" type="danger" @click="exportEmployees"
+          <el-button
+           size="small" type="danger" @click="exportEmployees"
             >导出</el-button
           >
-          <el-button size="small" type="primary" @click="addOn"
+          <el-button
+            v-isHas="point.employees"
+           size="small" type="primary" @click="addOn"
             >新增员工</el-button
           >
         </template>
@@ -73,8 +77,10 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small" @click="getEmployeesId(row)">角色</el-button>
-              <el-button type="text" size="small" @click="onRemove(row.id)"
+              <el-button type="text" size="small" @click="getEmployeesId(row)"
+                >角色</el-button
+              >
+              <el-button v-if="isHas(point.employees.del)"  type="text" size="small" @click="onRemove(row.id)"
                 >删除</el-button
               >
             </template>
@@ -106,7 +112,10 @@
       <canvas id="canvas"></canvas>
     </el-dialog>
 
-    <AssignRole :employeesId="employeesId" :visible.sync="showAssignRole"></AssignRole>
+    <AssignRole
+      :employeesId="employeesId"
+      :visible.sync="showAssignRole"
+    ></AssignRole>
   </div>
 </template>
 
@@ -117,8 +126,10 @@ import employees from '@/constant/employees'
 const { exportExcelMapPath, hireType } = employees
 import AddEmployee from './components/add-employees.vue'
 import AssignRole from './components/assign-role.vue'
+import MixinPermission from '@/mixins/permission'
 export default {
   name: 'Employees',
+  mixins: [MixinPermission],
   data() {
     return {
       employees: [],
@@ -202,10 +213,10 @@ export default {
       })
     },
     getEmployeesId(val) {
-      this.showAssignRole=true
+      this.showAssignRole = true
       // console.log(val.id);
       this.employeesId = val.id
-    }
+    },
   }
 }
 </script>

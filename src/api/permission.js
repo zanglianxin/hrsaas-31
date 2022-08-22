@@ -7,3 +7,17 @@ export function getPermissionList(params) {
       params
     })
   }
+
+
+  /**
+   * 添加权限点
+   * @param {Object} data 
+   * @returns Promise
+   */
+  export const addPermission = (data) => {
+    return request({
+      url: '/sys/permission',
+      method: 'POST',
+      data
+    })
+  }
