@@ -10,7 +10,7 @@ export default {
     {
       path: '',
       component: () => import('@/views/import'),
-      meta: { title: '导入模块', icon: 'lock' }
-    }
-  ]
+      meta: { title: '员工', icon: 'people' },
+    },
+  ],
 }

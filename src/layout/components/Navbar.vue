@@ -13,12 +13,14 @@
     </div>
 
     <div class="right-menu">
+      <ToggleLang />
+      <FullScreen />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img
             :src="$store.state.user.userInfo.staffPhoto"
-            v-imgError="defaultImg"
             class="user-avatar"
+            v-imgError="defaultImg"
           />
           <span>{{ $store.state.user.userInfo.username }}</span>
           <i class="el-icon-caret-bottom" />
@@ -43,9 +45,10 @@ import Hamburger from '@/components/Hamburger'
 import defaultImg from '@/assets/common/head.jpg'
 
 export default {
+  // 如果想在data中定义本地图片路径,需要先引入
   data() {
     return {
-      defaultImg,
+      defaultImg
     }
   },
   components: {
@@ -60,38 +63,39 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      this.$store.dispatch('user/logout')
-      this.$router.push('/login')
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.app-breadcrumb {
-  display: inline-block;
-  font-size: 18px;
-  line-height: 50px;
-  margin-left: 10px;
-  color: #ffffff;
-  cursor: text;
-  .breadBtn {
-    background: #84a9fe;
-    font-size: 14px;
-    padding: 0 10px;
-    display: inline-block;
-    height: 30px;
-    line-height: 30px;
-    border-radius: 10px;
-    margin-left: 15px;
-  }
-}
 .navbar {
   height: 50px;
   overflow: hidden;
   position: relative;
   background-image: -webkit-linear-gradient(left, #3d6df8, #5b8cff);
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+
+  .app-breadcrumb {
+    display: inline-block;
+    font-size: 18px;
+    line-height: 50px;
+    margin-left: 10px;
+    color: #ffffff;
+    cursor: text;
+    .breadBtn {
+      background: #84a9fe;
+      font-size: 14px;
+      padding: 0 10px;
+      display: inline-block;
+      height: 30px;
+      line-height: 30px;
+      border-radius: 10px;
+      margin-left: 15px;
+    }
+  }
 
   .hamburger-container {
     line-height: 46px;
@@ -116,6 +120,7 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
+    display: flex;
 
     &:focus {
       outline: none;
@@ -143,14 +148,16 @@ export default {
       margin-right: 30px;
 
       .avatar-wrapper {
+        position: relative;
         display: flex;
         align-items: center;
-        position: relative;
         color: #fff;
         cursor: pointer;
+
         span {
           margin: 0 3px;
         }
+
         .user-avatar {
           cursor: pointer;
           width: 40px;

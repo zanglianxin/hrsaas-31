@@ -7,19 +7,21 @@ export default {
   },
   children: [
     {
+      name: 'Employees',
       path: '',
       component: () => import('@/views/employees'),
-      meta: { title: '员工', icon: 'people' }
+      meta: { title: '员工', icon: 'people' },
     },
     {
       path: 'detail/:id',
       component: () => import('@/views/employees/detail'),
+      props: true,
       hidden: true,
     },
     {
       path: 'print/:id',
-      component: () => import('@/views/employees/PrintInfo'),
+      component: () => import('@/views/employees/print'),
       hidden: true,
-    }
-  ]
+    },
+  ],
 }

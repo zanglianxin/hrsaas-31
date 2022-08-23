@@ -1,13 +1,29 @@
 <template>
- <div class="upload-excel">
+  <div class="upload-excel">
     <div class="btn-upload">
-      <el-button :loading="loading" size="mini" type="primary" @click="handleUpload">
+      <el-button
+        :loading="loading"
+        size="mini"
+        type="primary"
+        @click="handleUpload"
+      >
         点击上传
       </el-button>
     </div>
 
-    <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick">
-    <div class="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
+    <input
+      ref="excel-upload-input"
+      class="excel-upload-input"
+      type="file"
+      accept=".xlsx, .xls"
+      @change="handleClick"
+    />
+    <div
+      class="drop"
+      @drop="handleDrop"
+      @dragover="handleDragover"
+      @dragenter="handleDragover"
+    >
       <i class="el-icon-upload" />
       <span>将文件拖到此处</span>
     </div>
@@ -16,20 +32,19 @@
 
 <script>
 import XLSX from 'xlsx'
-
 export default {
   name: 'UploadExcel',
   props: {
     beforeUpload: Function, // eslint-disable-line
-    onSuccess: Function // eslint-disable-line
+    onSuccess: Function, // eslint-disable-line
   },
   data() {
     return {
       loading: false,
       excelData: {
         header: null,
-        results: null
-      }
+        results: null,
+      },
     }
   },
   methods: {
@@ -48,7 +63,6 @@ export default {
         return
       }
       const rawFile = files[0] // only use files[0]
-
       if (!this.isExcel(rawFile)) {
         this.$message.error(
           'Only supports upload .xlsx, .xls, .csv suffix files'
@@ -75,7 +89,6 @@ export default {
     },
     upload(rawFile) {
       this.$refs['excel-upload-input'].value = null // fix can't select the same excel
-
       if (!this.beforeUpload) {
         this.readerData(rawFile)
         return
@@ -121,8 +134,8 @@ export default {
     },
     isExcel(file) {
       return /\.(xlsx|xls|csv)$/.test(file.name)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -130,25 +143,26 @@ export default {
 .upload-excel {
   display: flex;
   justify-content: center;
-   margin-top: 100px;
-   .excel-upload-input{
-       display: none;
-        z-index: -9999;
-     }
-   .btn-upload , .drop{
-      border: 1px dashed #bbb;
-      width: 350px;
-      height: 160px;
-      text-align: center;
-      line-height: 160px;
-   }
-   .drop{
-       line-height: 80px;
-       color: #bbb;
-      i {
-        font-size: 60px;
-        display: block;
-      }
-   }
+  margin-top: 100px;
+  .excel-upload-input {
+    display: none;
+    z-index: -9999;
+  }
+  .btn-upload,
+  .drop {
+    border: 1px dashed #bbb;
+    width: 350px;
+    height: 160px;
+    text-align: center;
+    line-height: 160px;
+  }
+  .drop {
+    line-height: 80px;
+    color: #bbb;
+    i {
+      font-size: 60px;
+      display: block;
+    }
+  }
 }
 </style>

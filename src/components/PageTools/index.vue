@@ -1,15 +1,15 @@
 <template>
-  <el-card class="card">
+  <el-card class="box-card">
     <el-row type="flex">
       <el-col>
         <el-tag v-if="isShowLeft">
           <i :class="leftIcon"></i>
-           <slot name="left-tag"></slot>
+          <slot name="left-tag" />
         </el-tag>
       </el-col>
       <el-col>
         <el-row type="flex" justify="end">
-          <slot name="right"/>
+          <slot name="right" />
         </el-row>
       </el-col>
     </el-row>
@@ -22,24 +22,26 @@ export default {
   data() {
     return {}
   },
+
   props: {
     leftIcon: {
       type: String,
-      default: 'el-icon-info'
+      default: 'el-icon-info',
     },
     isShowLeft: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
+
   created() {},
 
-  methods: {}
+  methods: {},
 }
 </script>
 
 <style scoped lang="scss">
-.card {
+.box-card {
   margin: 10px 0;
 }
 </style>
